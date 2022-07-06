@@ -1,29 +1,32 @@
-package com.example.homework27.service;
+package com.example.homework28.service;
 
-import com.example.homework27.model.Employee;
-import com.example.homework27.exception.EmployeeAlreadyAddedException;
-import com.example.homework27.exception.EmployeeNotFoundException;
-import com.example.homework27.exception.EmployeeStorageIsFullException;
+import com.example.homework28.model.Employee;
+import com.example.homework28.exception.EmployeeAlreadyAddedException;
+import com.example.homework28.exception.EmployeeNotFoundException;
+import com.example.homework28.exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-   // private Employee egorovEgor = new Employee("Егоров", "Егор");
 
     private Map<String, Employee> employees = new HashMap<>(Map.of(
-            "Егоров Егор", new Employee("Егоров", "Егор")
-
-
-
-
+            "Егоров Егор", new Employee("Егоров", "Егор", 40000, 1),
+            "Аалександров Александр", new Employee("Аалександров", "Аалександр", 50000, 1),
+            "Иванов Иван", new Employee("Иванов", "Иван", 60000, 1),
+            "Дмитриев Дмитрий", new Employee("Дмитриев", "Дмитрий", 70000, 2),
+            "Сергеев Сергей", new Employee("Сергеев", "Сергей", 80000, 2),
+            "Николаев Николай", new Employee("Николаев", "Николай", 90000, 2),
+            "Евгеньев Евгений", new Employee("Евгеньев", "Евгений", 100000, 3),
+            "Евсеев Евсей", new Employee("Евсеев", "Евсей", 90000, 3),
+            "Павлов Павел", new Employee("Павлов", "Павел", 80000, 3)
     ));
 
     private final int employeeNum = 10;
 
     @Override
-    public Employee addNewEmployee(String lastName, String firstName) {
+    public Employee addNewEmployee(String lastName, String firstName, Integer salary, Integer department) {
 
         if (employees.size() >= employeeNum){
             throw new EmployeeStorageIsFullException("Все вакансии заняты");
@@ -31,7 +34,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employees.containsKey(lastName + " " + firstName)) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже существует");
         }
-        Employee employee = new Employee(lastName, firstName);
+        Employee employee = new Employee(lastName, firstName, salary, department);
         employees.put(lastName + " " + firstName, employee);
         return employee;
     }
@@ -59,9 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Map<String, Employee> list() {
-        Map list = new HashMap();
-        list.putAll(employees);
-        return list;
+        return new HashMap(employees);
     }
 }
 
